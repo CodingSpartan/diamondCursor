@@ -1,0 +1,108 @@
+/* Hide system cursor only on fine pointer devices */
+@media (hover: hover) and (pointer: fine) {
+  html body:not(.sqs-edit-mode-active) * {
+    cursor: none !important;
+  }
+}
+
+body:not(.sqs-edit-mode-active) .vf-cursor{
+  --size: 22px;
+  --stroke: #664E33;
+  --lineW: 22px;      /* final width of the lines */
+  --lineH: 2px;
+  --shrink: 0.72;     /* scale when hover/click */
+
+  width: var(--size);
+  height: var(--size);
+  position: fixed;
+  top: 0;
+  left: 0;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 99999999999;
+  display: none;
+
+  /* ✅ keep this */
+  mix-blend-mode: difference;
+}
+
+/* ✅ centered dot (no lag — moves with the cursor wrapper) */
+body:not(.sqs-edit-mode-active) .vf-cursor__dot{
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--stroke);
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  transition: opacity 160ms ease;
+}
+
+/* Diamond */
+body:not(.sqs-edit-mode-active) .vf-cursor__diamond{
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  border: 2px solid var(--stroke);
+  background: transparent;
+  transform: rotate(45deg);
+  border-radius: 2px;
+  transition: transform 160ms ease;
+}
+
+/* Lines */
+body:not(.sqs-edit-mode-active) .vf-cursor__line{
+  position: absolute;
+  left: 50%;
+  width: var(--lineW);
+  height: var(--lineH);
+  background: var(--stroke);
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition: transform 220ms ease;
+}
+
+/* ✅ bring lines closer to the diamond */
+body:not(.sqs-edit-mode-active) .vf-cursor__line--top{
+  top: -5px;
+}
+body:not(.sqs-edit-mode-active) .vf-cursor__line--bottom{
+  bottom: -5px;
+}
+
+/* Hover: shrink + draw lines + fade dot */
+body:not(.sqs-edit-mode-active) .vf-cursor.is-hover .vf-cursor__diamond{
+  transform: rotate(45deg) scale(var(--shrink));
+}
+body:not(.sqs-edit-mode-active) .vf-cursor.is-hover .vf-cursor__line{
+  transform: translateX(-50%) scaleX(1);
+}
+body:not(.sqs-edit-mode-active) .vf-cursor.is-hover .vf-cursor__dot{
+  opacity: 0;
+}
+
+/* Mouse down (non-link): shrink + fade dot */
+body:not(.sqs-edit-mode-active) .vf-cursor.is-down .vf-cursor__diamond{
+  transform: rotate(45deg) scale(var(--shrink));
+}
+body:not(.sqs-edit-mode-active) .vf-cursor.is-down .vf-cursor__dot{
+  opacity: 0;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce){
+  body:not(.sqs-edit-mode-active) .vf-cursor__diamond,
+  body:not(.sqs-edit-mode-active) .vf-cursor__line,
+  body:not(.sqs-edit-mode-active) .vf-cursor__dot{
+    transition: none !important;
+  }
+}
+  /* Lag wrapper for diamond + lines only */
+body:not(.sqs-edit-mode-active) .vf-cursor__diamond-wrap{
+  position: absolute;
+  inset: 0;
+  transform: translate(0,0);
+  will-change: transform;
+}
