@@ -49,7 +49,7 @@ body:not(.sqs-edit-mode-active) .vf-cursor__diamond{
   background: transparent;
   transform: rotate(45deg);
   border-radius: 2px;
-  transition: transform 160ms ease;
+  transition: transform 300ms ease;
 }
 
 /* Lines */
