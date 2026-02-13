@@ -7,7 +7,7 @@
 
 body:not(.sqs-edit-mode-active) .vf-cursor{
   --size: 22px;
-  --stroke: #664E33;
+  --stroke: #916f49;
   --lineW: 22px;      /* final width of the lines */
   --lineH: 2px;
   --shrink: 0.72;     /* scale when hover/click */
